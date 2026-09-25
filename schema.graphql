@@ -1,0 +1,31 @@
+# LogiTech SaaS - Contrato de la API (Schema-First)
+# Unifica clientes y sus facturas históricas en un solo grafo.
+
+"Estado del ciclo de vida de una factura."
+enum EstadoFactura {
+  PAGADA
+  PENDIENTE
+  ANULADA
+}
+
+"Cliente corporativo de la plataforma."
+type Cliente {
+  id: ID!
+  nombre: String!
+  sector: String!
+  "Facturas históricas del cliente (lista vacía si no tiene)."
+  facturas: [Factura!]!
+}
+
+"Factura emitida a un cliente."
+type Factura {
+  id: ID!
+  clienteId: ID!
+  monto: Float!
+  estado: EstadoFactura!
+}
+
+type Query {
+  "Catálogo completo de clientes."
+  clientes: [Cliente!]!
+}

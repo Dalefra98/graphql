@@ -12,6 +12,32 @@ Al finalizar el laboratorio, habrás aprendido a:
 
 ---
 
+## ✅ Solución Implementada
+
+> Explicación completa, capturas y análisis en **[REPORTE.md](REPORTE.md)**.
+
+**Resultado:** la query del dashboard pasa de **6 consultas** (N+1) a **2 consultas** con DataLoader.
+
+### Estructura
+| Archivo | Contenido |
+|---|---|
+| `schema.graphql` | Contrato SDL: `Cliente`, `Factura`, `enum EstadoFactura` y `Query.clientes` |
+| `database.js` | Mock DB con 5 clientes; incluye `fetchFacturasByClienteIdsBatch` |
+| `resolvers.naive.js` | Solución **ingenua**: una consulta de facturas por cliente (N+1) |
+| `resolvers.js` | Solución **optimizada**: `Cliente.facturas` usa `loaders.facturasPorCliente.load()` |
+| `dataloaders.js` | Batch Function + fábrica `createLoaders()` |
+| `server.js` | Carga el esquema, elige resolvers y crea los loaders **por petición** en `context` |
+
+### Ejecución
+```bash
+npm install
+npm start               # versión optimizada (DataLoader) → 2 consultas
+npm run start:ingenuo   # versión ingenua (N+1)           → 6 consultas
+```
+Abrir `http://localhost:4000/`, ejecutar la query `GetDashboardData` y revisar la consola.
+
+---
+
 ## 🛠️ Requisitos Previos
 
 Antes de comenzar, asegúrate de tener instalado en tu entorno local:
